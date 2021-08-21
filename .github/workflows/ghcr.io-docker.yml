@@ -53,9 +53,12 @@ jobs:
             # push minor version (:1.2)
             VERSION=$(cut -d. -f -2 <<< $VERSION)
             tag_push $VERSION
+            
+            # major version (:1)
+            VERSION=$(cut -d. -f -1 <<< $VERSION)
           fi
           
-          # push normally, and major version (:1)
+          # push normally (and possibly major)
           tag_push $VERSION
 
           # Can't push multiple tags at once: https://github.com/docker/cli/issues/267
