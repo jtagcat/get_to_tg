@@ -3,7 +3,7 @@ GET request with paramaters to Telegram message. No brains included, no gurantee
 
 ## Github Actions Docker image
 ```sh
-docker pull ghcr.io/jtagcat/get_to_tg:main
+docker pull ghcr.io/jtagcat/get_to_tg:0.1
 ```
 
 ## Live instance
