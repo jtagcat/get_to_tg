@@ -1,0 +1,60 @@
+name: Docker build
+# https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions
+
+on:   
+  push:
+    # https://semver.org
+    tags:
+      - v*
+
+  # Run tests for any PRs.
+  pull_request:
+
+jobs:
+  # Push image to GitHub Packages.
+  # See also https://docs.docker.com/docker-hub/builds/
+  push:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build . --file Dockerfile --tag ${{ github.repository.name }} --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: Log in to registry
+        # This is where you will update the PAT to GITHUB_TOKEN
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push image
+        run: |
+          # Destiination, trsnform to lowercase
+          IMAGE_ID=$(echo ghcr.io/${{ github.repository }} | tr '[A-Z]' '[a-z]')
+
+          function tag_push() {
+          docker tag ${{ github.repository.name }} $IMAGE_ID:$1
+          docker push $IMAGE_ID:$1
+          }
+
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          
+          # is release
+          if [[ "${{ github.ref }}" == "refs/tags/"* ]]; then
+            # Strip "v" prefix from tag name (v1.2.3 to 1.2.3)
+            VERSION=$(echo $VERSION | sed -e 's/^v//')
+            
+            tag_push $VERSION # push patch (:1.2.3)
+            
+            # push minor version (:1.2)
+            VERSION=$(cut -d. -f -2 <<< $VERSION)
+            tag_push $VERSION
+          fi
+          
+          # push normally, and major version (:1)
+          tag_push $VERSION
+
+          # Can't push multiple tags at once: https://github.com/docker/cli/issues/267
