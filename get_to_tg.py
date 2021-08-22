@@ -22,10 +22,9 @@ api_url = api_url_base(token=str(os.environ['GTT_BOT_TOKEN'])) # will raise if e
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET'])
+@app.route('/<int:chat_id>', methods=['GET'])
 def parse_request():	# If somebody accesses us
 	message = request.args.get('message')
-	chat_id = request.args.get('chat_id')
 	
 	if not message:
 		message = request.args.get('content') # Compatability with https://github.com/markusfisch/BinaryEye
