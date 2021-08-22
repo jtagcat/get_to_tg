@@ -26,6 +26,9 @@ app = Flask(__name__)
 def parse_request():	# If somebody accesses us
 	message = request.args.get('message')
 	chat_id = request.args.get('chat_id')
+	
+	if not message:
+		message = request.args.get('content') # Compatability with https://github.com/markusfisch/BinaryEye
 
 	if not chat_id: # empty
 		return Response('Missing chat_id.', mimetype='text/plain'), 400
