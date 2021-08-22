@@ -23,7 +23,7 @@ app = Flask(__name__)
 
 
 @app.route('/<int:chat_id>', methods=['GET'])
-def parse_request():	# If somebody accesses us
+def parse_request(chat_id):	# If somebody accesses us
 	message = request.args.get('message')
 	
 	if not message:
