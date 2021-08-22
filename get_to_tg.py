@@ -18,14 +18,6 @@ import requests
 api_url_base = 'https://api.telegram.org/bot{token}/sendMessage'.format
 api_url = api_url_base(token=str(os.environ['GTT_BOT_TOKEN'])) # will raise if empty
 
-### Get git hash ###
-with open('.git/HEAD', 'r') as file:
-		current_branch = file.read().replace('\n', '').replace('ref: ', '')
-with open('.git/' + current_branch, 'r') as file:
-		git_hash = file.read().replace('\n', '')
-
-print("Version: " + git_hash)
-
 ### FLASK ###
 app = Flask(__name__)
 
