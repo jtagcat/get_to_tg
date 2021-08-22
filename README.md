@@ -3,12 +3,12 @@ GET request with paramaters to Telegram message. No brains included, no gurantee
 
 ## Github Actions Docker image
 ```sh
-docker pull ghcr.io/jtagcat/get_to_tg:0.1
+docker pull ghcr.io/jtagcat/get_to_tg:0
 ```
 
 ## Live instance
 [@jtagcatbot](https://t.me/jtagcatbot)
 
 ```sh
-curl https://gtt.c7.ee/?chat_id=0118999&message=Hello
+curl https://gtt.c7.ee/0118999/?message=Hello
 ```
