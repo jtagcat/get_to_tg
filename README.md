@@ -1,4 +1,6 @@
 # `get_to_tg`
+**archived: provided sending messages without a bot token, but this has been abused; [Telegram API](https://core.telegram.org/bots/api#sendmessage) supports POST messaging.**
+
 GET request with paramaters to Telegram message. No brains included, no gurantees.
 
 ## Github Actions Docker image
